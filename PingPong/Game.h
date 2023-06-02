@@ -1,5 +1,6 @@
 #pragma once
-#include "Utils.h"
+#include "Paddle.h"
+#include "Ball.h"
 
 class Game
 {
@@ -19,5 +20,7 @@ class Game
 		SDL_Window* window = nullptr;
 		SDL_Renderer* renderer = nullptr;
 
+		class Paddle *leftPaddle, *rightPaddle;
+		class Ball *ball;
 };
 

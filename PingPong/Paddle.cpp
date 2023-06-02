@@ -6,18 +6,40 @@ Paddle::Paddle(int i)
 	speed = 20.f;
 
 	if (id == 0) {
-		x = 0;
+		pos.x = 0;
 	}
 	else if (id == 1) {
-		x = SCREEN_WIDTH - width;
+		pos.x = SCREEN_WIDTH - width;
 	}
 
-	y = SCREEN_HEIGHT / 2 - height / 2;
+	pos.y = SCREEN_HEIGHT / 2 - height / 2;
 
-	x = 0;
-	y = 0;
+	rect.x = (int)pos.x;
+	rect.y = (int)pos.y;
+	rect.w = width;
+	rect.h = height;
+}
 
+void Paddle::update() {
 
-	rect.x = (int)x;
-	rect.y = (int)y;
+	// Set initial y
+	pos.y = pos.y + speed * dir;
+
+	// keep paddle inbounds
+	if (pos.y < 0) {
+		pos.y = 0;
+	}
+	else if (pos.y + height > SCREEN_HEIGHT) {
+		pos.y = SCREEN_HEIGHT - height;
+	}
+
+	rect.y = pos.y;
+}
+
+void Paddle::SetDir(int d) {
+	dir = d;
+}
+
+SDL_Rect* Paddle::GetRect() {
+	return &rect;
 }

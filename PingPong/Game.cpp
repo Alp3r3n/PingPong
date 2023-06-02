@@ -19,6 +19,13 @@ bool Game::Init()
 		return false;
 	}
 
+	// Initialize of paddles
+	leftPaddle = new Paddle(0);
+	rightPaddle = new Paddle(1);
+
+	// Initialize ball
+	ball = new Ball();
+
 	return true;
 }
 
@@ -48,17 +55,64 @@ void Game::HandleEvents()
 	{
 		isRunning = false;
 	}
+
+
+	// Left paddle movement
+	leftPaddle->SetDir(0);
+
+	if (keystates[SDL_SCANCODE_W])
+	{
+		leftPaddle->SetDir(-1);
+	}
+	else if (keystates[SDL_SCANCODE_S])
+	{
+		leftPaddle->SetDir(1);
+	}
+	else
+	{
+		leftPaddle->SetDir(0);
+	}
+
+	// Right paddle movement
+
+	rightPaddle->SetDir(0);
+
+	if (keystates[SDL_SCANCODE_UP])
+	{
+		rightPaddle->SetDir(-1);
+	}
+	else if (keystates[SDL_SCANCODE_DOWN])
+	{
+		rightPaddle->SetDir(1);
+	}
+	else
+	{
+		rightPaddle->SetDir(0);
+	}
+
 }
 
-void Game::Update()
-{
+void Game::Update() {
 
+	leftPaddle->update();
+    rightPaddle->update();
+
+	ball->update();
 }
 
 void Game::Draw()
 {
 	SDL_SetRenderDrawColor(renderer, 40, 40, 40, 255);
 	SDL_RenderClear(renderer);
+
+	// Draw paddles
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(renderer, leftPaddle->GetRect());
+	SDL_RenderFillRect(renderer, rightPaddle->GetRect());
+
+	// Draw ball
+	SDL_SetRenderDrawColor(renderer, 40, 40, 255, 255);
+	SDL_RenderFillRect(renderer, ball->GetRect());
 
 	SDL_RenderPresent(renderer);
 }
